@@ -13,6 +13,13 @@
 
 **AHS** is a minimalist framework that shifts human effort from writing code to designing environments where AI agents can operate with maximum autonomy, reliability, and continuity across sessions.
 
+### 🚀 Compatible Platforms
+Designed to work seamlessly with any agentic environment, including:
+- **CLI Agents:** Claude Code, OpenCode, Aider.
+- **IDE Extensions:** Windsurf, Cursor, Cline, Roo Code.
+- **Custom Agents:** Antigravity and any agent with shell/tool access.
+
+
 ---
 
 ## Table of Contents
@@ -94,6 +101,15 @@ The **Harness** provides the three pillars an agent needs to operate without tec
    ```
 
 3. The skill will generate the full harness structure, register hooks, and log initialization in `.agent/LOG.md`.
+
+### 💡 Usage Example
+
+**Scenario:** You want to initialize a new project with a robust agentic structure.
+
+> **User:** "Activa la skill `harness-architect` para inicializar un nuevo proyecto de API con Node.js siguiendo el estándar AHS."
+>
+> **Agent:** "Analizando requisitos... Generando `AGENTS.md`, configurando hooks de validación en `/hooks` y creando las reglas de diseño en `rules/patterns.md`. El entorno ahora es **Agent-Legible**."
+
 
 ---
 
