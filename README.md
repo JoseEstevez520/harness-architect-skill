@@ -106,9 +106,9 @@ The **Harness** provides the three pillars an agent needs to operate without tec
 
 **Scenario:** You want to initialize a new project with a robust agentic structure.
 
-> **User:** "Activa la skill `harness-architect` para inicializar un nuevo proyecto de API con Node.js siguiendo el estándar AHS."
+> **User:** "Activate the `harness-architect` skill to initialize a new Node.js API project following the AHS standard."
 >
-> **Agent:** "Analizando requisitos... Generando `AGENTS.md`, configurando hooks de validación en `/hooks` y creando las reglas de diseño en `rules/patterns.md`. El entorno ahora es **Agent-Legible**."
+> **Agent:** "Analyzing requirements... Generating `AGENTS.md`, configuring validation hooks in `/hooks`, and creating design rules in `rules/patterns.md`. The environment is now **Agent-Legible**."
 
 
 ---
