@@ -45,8 +45,8 @@ The **Harness** provides the three pillars an agent needs to operate without tec
 
 | Pillar | Purpose | Implementation |
 |--------|---------|---------------|
-| **Constraints (Rules)** | Define boundaries and patterns | `rules/patterns.md` |
-| **Feedback Loops (Hooks)** | Real-time validation on every action | `hooks/PostToolUse` |
+| **Constraints (Rules)** | Define boundaries and patterns | `.agent/rules/patterns.md` |
+| **Feedback Loops (Hooks)** | Real-time validation on every action | `.agent/hooks/PostToolUse.*` |
 | **Institutional Memory (State)** | Persist decisions across sessions | `.agent/` directory |
 
 ---
@@ -55,11 +55,11 @@ The **Harness** provides the three pillars an agent needs to operate without tec
 
 | Component | Description |
 |-----------|-------------|
-| **`AGENTS.md`** | Technical contract and entry point for all agents — the first file every agent reads. |
-| **`hooks/`** | Self-executing validation scripts (e.g., `PostToolUse`) registered via `settings.json`. |
-| **`rules/`** | Architectural and coding constraints that define allowable patterns. |
-| **`skills/`** | Procedural capabilities for domain-specific tasks (e.g., `/debug`, `/lint`). |
-| **`.agent/`** | Persistent state directory with `LOG.md` (session history) and `CONTEXT.md` (architecture map). |
+| **`AGENTS.md`** | Technical contract and entry point for all agents — the first file every agent reads. Must be in the project root. |
+| **`.agent/hooks/`** | Self-executing validation scripts (e.g., `PostToolUse.js`) matching the project language. |
+| **`.agent/rules/`** | Architectural and coding constraints that define allowable patterns. |
+| **`.agent/skills/`** | Procedural capabilities for domain-specific tasks (e.g., `/debug`, `/lint`). |
+| **`.agent/`** | Persistent state directory containing `CONTEXT.md` (architecture map) and `LEARNINGS.md` (active knowledge). |
 
 ---
 
@@ -67,7 +67,7 @@ The **Harness** provides the three pillars an agent needs to operate without tec
 
 - **Agent-Legible by Design** — Every file follows a convention that agents can parse and act upon without ambiguity.
 - **Deterministic Validation** — Shell-based hooks provide objective pass/fail checks, eliminating subjective agent self-assessment.
-- **Zero Amnesia** — All critical decisions are logged in `.agent/LOG.md`, ensuring seamless handoff between agent sessions.
+- **Zero Amnesia** — All critical decisions and findings are logged in `.agent/LEARNINGS.md`, ensuring seamless handoff between agent sessions.
 - **Self-Evolving** — The `harness-architect-skill/` meta-skill allows the harness to audit and improve itself over time.
 - **Framework Agnostic** — Works with any language, stack, or agent platform.
 
@@ -100,7 +100,9 @@ The **Harness** provides the three pillars an agent needs to operate without tec
    Use harness-architect to optimize this project's harness based on [description].
    ```
 
-3. The skill will generate the full harness structure, register hooks, and log initialization in `.agent/LOG.md`.
+   You can also request audits or mid-project evolution updates.
+
+3. The skill will generate the full harness structure, write the `AGENTS.md`, and initialize the `.agent/` directory.
 
 ### 💡 Usage Example
 
@@ -108,31 +110,49 @@ The **Harness** provides the three pillars an agent needs to operate without tec
 
 > **User:** "Activate the `harness-architect` skill to initialize a new Node.js API project following the AHS standard."
 >
-> **Agent:** "Analyzing requirements... Generating `AGENTS.md`, configuring validation hooks in `/hooks`, and creating design rules in `rules/patterns.md`. The environment is now **Agent-Legible**."
+> **Agent:** "Analyzing requirements... Generating `AGENTS.md`, configuring validation hooks in `.agent/hooks`, and creating design rules in `.agent/rules/patterns.md`. The environment is now **Agent-Legible**."
 
 
 ---
 
 ## Usage Modes
 
-### Scaffold Mode
+### Mode A: Scaffold Mode (Empty Project)
 
 Generates a complete, production-ready harness for a new project with all core components preconfigured:
 
-- `AGENTS.md` with setup, build, and test commands.
-- Boilerplate `hooks/PostToolUse` for architecture validation.
-- Empty `rules/patterns.md` ready for custom constraints.
-- Standard skills like `/debug` for troubleshooting.
-- Initialized `.agent/LOG.md` and `.agent/CONTEXT.md`.
+- `AGENTS.md` with setup, build, and test commands (workflow-first, <70 lines).
+- Boilerplate `.agent/hooks/PostToolUse.js` for architecture validation.
+- Empty `.agent/rules/patterns.md` ready for custom constraints.
+- Standard skills like `/debug` for troubleshooting in `.agent/skills/`.
+- Initialized `.agent/LEARNINGS.md` and `.agent/CONTEXT.md`.
 
-### Optimization Mode
+### Mode B: Optimization Mode (Context-Aware)
 
 Analyzes an existing project description, tech stack, or codebase to design a customized harness:
 
-1. **Analysis** — Identifies critical architectural requirements, naming conventions, and common failure points.
-2. **Custom Rules** — Designs `rules/patterns.md` specific to the project (e.g., React patterns, API security constraints).
-3. **Tailored Hooks** — Writes `hooks/PostToolUse` logic that validates the project's specific design system.
-4. **Context Mapping** — Populates `.agent/CONTEXT.md` with a high-level overview of the system design.
+1. **Discovery** — Identifies critical architectural requirements, naming conventions, and common failure points.
+2. **Context Mapping** — Populates `.agent/CONTEXT.md` with a high-level overview of the system design.
+3. **Custom Rules** — Designs `.agent/rules/patterns.md` specific to the project.
+4. **Tailored Hooks** — Writes `.agent/hooks/PostToolUse.*` logic that validates the project's specific design system.
+5. **External Skills** — Downloads relevant official or framework-specific skills into `.agent/skills/`.
+
+### Mode C: Audit Mode (Existing Harness)
+
+Evaluates an existing harness to ensure it remains effective:
+
+1. Checks for stale or missing rules.
+2. Identifies conflicting constraints.
+3. Verifies that hook scripts match the current codebase.
+4. Proposes fixes and simplifications for any friction points.
+
+### Mode D: Evolution Mode (Mid-Project)
+
+Maintains the harness as the project grows:
+
+1. Moves stable architecture decisions into `.agent/rules/patterns.md`.
+2. Prunes rules that are now enforced by linters or types.
+3. Archives completed-phase learnings from `.agent/LEARNINGS.md`.
 
 ---
 
@@ -140,21 +160,20 @@ Analyzes an existing project description, tech stack, or codebase to design a cu
 
 ```
 agentic-harness-blueprint/
-├── AGENTS.md                # Agent entry point
+├── AGENTS.md                # Agent entry point (workflow-first)
 ├── README.md                # This file
-├── settings.json            # Hook registration and agent config
-├── .agent/                  # Persistent state
-│   ├── CONTEXT.md           # Architecture map
-│   └── LOG.md               # Decision history
 ├── harness-architect-skill/ # Meta-skill for self-modification
 │   └── SKILL.md
-├── hooks/                   # Validation layer
-│   └── PostToolUse
-├── rules/                   # Constraint layer
-│   └── patterns.md
-└── skills/                  # Capability layer
-    └── debug/
-        └── SKILL.md
+└── .agent/                  # Harness ecosystem
+    ├── CONTEXT.md           # Architecture map
+    ├── LEARNINGS.md         # Active knowledge & discoveries
+    ├── hooks/               # Validation layer
+    │   └── PostToolUse.js
+    ├── rules/               # Constraint layer
+    │   └── patterns.md
+    └── skills/              # Capability layer
+        └── debug/
+            └── SKILL.md
 ```
 
 ---
